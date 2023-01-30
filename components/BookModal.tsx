@@ -31,6 +31,15 @@ function BookModal() {
     setIsLoading(false);
   };
 
+  const secure = (str: string) => {
+    if (str.startsWith("https://")) return str;
+
+    const ans = str.split("");
+    ans.splice(4, 0, "s");
+    const a = ans.join("");
+    return a;
+  };
+
   useEffect(() => {
     fetchLinks();
   }, [book]);
@@ -62,8 +71,8 @@ function BookModal() {
             <div className="pt-2 flex w-full flex-grow gap-2">
               <div className="w-40 h-40 bg-gray-500 rounded-[4px] shrink-0 relative">
                 <Image
-                  loader={() => book?.image}
-                  src={book?.image}
+                  loader={() => secure(book?.image)}
+                  src={secure(book?.image)}
                   alt={"Book"}
                   fill
                   style={{ objectFit: "cover" }}
