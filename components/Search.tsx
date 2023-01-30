@@ -34,7 +34,7 @@ function Search() {
 
     const ans = str.split("");
     ans.splice(4, 0, "s");
-    const a = ans.join();
+    const a = ans.join("");
     return a;
   };
 
