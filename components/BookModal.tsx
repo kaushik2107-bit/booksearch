@@ -32,6 +32,7 @@ function BookModal() {
   };
 
   const secure = (str: string) => {
+    if (!str) return str;
     if (str.startsWith("https://")) return str;
 
     const ans = str.split("");
