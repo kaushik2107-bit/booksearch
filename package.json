@@ -6,9 +6,21 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@heroicons/react": "^2.0.13",
+    "@mui/material": "^5.11.5",
+    "axios": "^1.2.4",
+    "book-link": "^1.4.9",
+    "firebase": "^9.16.0",
+    "firebase-admin": "^11.5.0",
+    "framer-motion": "^8.5.0",
+    "meilisearch": "^0.30.0",
     "next": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-spinners": "^0.13.8",
+    "recoil": "^0.7.6"
   },
   "devDependencies": {
     "@types/node": "18.11.3",
