@@ -11,6 +11,7 @@ import { auth, db } from "../firebase";
 import {
   collection,
   doc,
+  DocumentData,
   getDocs,
   query,
   serverTimestamp,
@@ -73,7 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       const q = query(colRef, where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
-      let docs = [];
+      let docs: DocumentData = [];
       querySnapshot.forEach((doc) => {
         docs.push(doc.data());
       });

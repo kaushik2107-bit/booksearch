@@ -23,6 +23,6 @@ export const bookModal = atom<bookData | null | Record<string, any>>({
 });
 
 export const bookBool = atom<boolean>({
-  key: "book",
+  key: "bookbool",
   default: false,
 });
