@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { bookBool } from "../atoms/bookAtom";
 import { menuModal } from "../atoms/menuModal";
 import BookModal from "../components/BookModal";
+import Extra from "../components/Extra";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Landing from "../components/Landing";
@@ -17,7 +18,7 @@ import SearchSkeleton from "../components/SearchSkeleton";
 const Home: NextPage = () => {
   const menu = useRecoilValue(menuModal);
   const isOpen = useRecoilValue(bookBool);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean | null>(null);
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Head>
@@ -30,7 +31,14 @@ const Home: NextPage = () => {
       <main className="flex w-full flex-1 flex-col bg-gray-700 text-white">
         <Header />
         <Landing setIsLoading={setIsLoading} isLoading={isLoading} />
-        {isLoading ? <SearchSkeleton /> : isLoading !== null ? <Search /> : ""}
+        {isLoading === true ? (
+          <SearchSkeleton />
+        ) : isLoading === false ? (
+          <Search />
+        ) : (
+          ""
+        )}
+        <Extra />
         {false && <List />}
         <Footer />
       </main>

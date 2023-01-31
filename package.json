@@ -10,6 +10,7 @@
     "@emotion/styled": "^11.10.5",
     "@heroicons/react": "^2.0.13",
     "@mui/material": "^5.11.5",
+    "@next/font": "^13.1.6",
     "axios": "^1.2.4",
     "book-link": "^1.4.9",
     "firebase": "^9.16.0",
