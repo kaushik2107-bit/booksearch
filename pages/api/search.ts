@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { db } from "../../firebase-server";
+// import { db } from "../../firebase-server";
 
 type Data = {
   name: string;
@@ -11,9 +11,9 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    const resource = req.body;
-    const result = await db.collection("books").add(resource);
-    res.status(201).json({ name: "Added", id: result.id });
+    // const resource = req.body;
+    // const result = await db.collection("books").add(resource);
+    res.status(201).json({ name: "Added", id: "result.id" || "string" });
   } else {
     res.status(200).json({ name: "John Doe", id: "string" });
   }

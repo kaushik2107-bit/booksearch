@@ -4,19 +4,14 @@ import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { useRecoilState } from "recoil";
 import { bookAtom } from "../atoms/bookAtom";
-import useAuth from "../hooks/useAuth";
-import { client } from "../meilisearch";
 
 function Landing({ setIsLoading, isLoading }) {
-  const { user, login, loading, logout } = useAuth();
   const [term, setTerm] = useState<string>("");
   const [search, setSearch] = useRecoilState(bookAtom);
 
   const handleSearch = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    // const result = await client.index("books").search(term, { limit: 8 });
-    // setSearch(result.hits);
     const resu = await axios.get(
       `https://www.googleapis.com/books/v1/volumes?q=${term}&maxResults=10`
     );
@@ -35,8 +30,6 @@ function Landing({ setIsLoading, isLoading }) {
       };
       books.push(ans);
     });
-    // const linking = BookLink.linkArray("Pride and Prejudice");
-    // console.log(linking);
     console.log(books);
     setSearch(books);
     setIsLoading(false);
@@ -53,7 +46,7 @@ function Landing({ setIsLoading, isLoading }) {
         placeholder={"blur"}
         blurDataURL={"LAEf7%VtE1R*~pIUIqj[9aRit7s:"}
       />
-      <div className="z-10 flex flex-col items-center justify-center space-y-3 h-full w-full pt-10">
+      <div className="z-10 flex flex-col items-center justify-center space-y-3 h-full w-full">
         <h1 className="text-3xl shadow-2xl">Welcome to BookSearch</h1>
         <form onSubmit={handleSearch}>
           <input
@@ -68,7 +61,7 @@ function Landing({ setIsLoading, isLoading }) {
             {isLoading ? <ClipLoader size={15} color="#ffffff" /> : "Search"}
           </button>
         </form>
-        <div className="text-center pt-5 flex flex-col items-center space-y-1">
+        {/* <div className="text-center pt-5 flex flex-col items-center space-y-1">
           <span className="text-md">
             Help us make it better! {user?.displayName?.split(" ")[0]}
           </span>
@@ -80,7 +73,7 @@ function Landing({ setIsLoading, isLoading }) {
             <img src="/googleLogo.png" className="w-6 h-6" />
             {!user ? "Sign in with Google" : "Logout"}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
