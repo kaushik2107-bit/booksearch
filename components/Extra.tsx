@@ -6,7 +6,7 @@ function Extra() {
   return (
     <div className="py-8 bg-gray-200">
       <div className="border-2 h-96 md:h-80 bg-gray-200 flex flex-col-reverse md:flex-row items-center justify-between">
-        <div className="w-1/2 px-8 max-md:w-full">
+        <div className="w-1/2 px-8 max-md:w-full md:text-right">
           <h2
             className={`text-gray-800 mb-2 text-xl md:text-3xl font-extrabold ${nunito.className}`}
           >

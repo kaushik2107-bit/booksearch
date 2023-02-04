@@ -3,36 +3,56 @@ import Image from "next/image";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { useRecoilState } from "recoil";
-import { bookAtom } from "../atoms/bookAtom";
+import { bookAtom, searchTerm } from "../atoms/bookAtom";
+import useAuth from "../hooks/useAuth";
+
+interface bookData {
+  name: string;
+  id?: string;
+  author: string;
+  published_on: string;
+  genres: string[];
+  link: string;
+  working: number;
+  notWorking: number;
+  image: string;
+}
 
 function Landing({ setIsLoading, isLoading }) {
   const [term, setTerm] = useState<string>("");
   const [search, setSearch] = useRecoilState(bookAtom);
+  const [seTerm, setSeTerm] = useRecoilState(searchTerm);
+  const { user, login, loading, logout } = useAuth();
 
   const handleSearch = async (e: any) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const resu = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${term}&maxResults=10`
-    );
-    console.log(resu.data.items);
-    let books: object[] = [];
-    resu.data.items.map((item) => {
-      const ans = {
-        name: item.volumeInfo.title,
-        author: item.volumeInfo.authors,
-        published_on: item.volumeInfo.publishedDate,
-        genres: item.volumeInfo.categories,
-        link: "#",
-        working: 0,
-        notWorking: 0,
-        image: item.volumeInfo.imageLinks?.smallThumbnail,
-      };
-      books.push(ans);
-    });
-    console.log(books);
-    setSearch(books);
-    setIsLoading(false);
+    try {
+      e.preventDefault();
+      setIsLoading(true);
+      setSeTerm(term);
+      const resu = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=${term}&maxResults=10`
+      );
+      console.log(resu.data.items);
+      let books: bookData[] = [];
+      resu.data.items.map((item) => {
+        const ans: bookData = {
+          name: item.volumeInfo.title,
+          author: item.volumeInfo.authors,
+          published_on: item.volumeInfo.publishedDate,
+          genres: item.volumeInfo.categories,
+          link: "#",
+          working: 0,
+          notWorking: 0,
+          image: item.volumeInfo.imageLinks?.smallThumbnail,
+        };
+        books.push(ans);
+      });
+      console.log(books);
+      setSearch(books);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -74,6 +94,13 @@ function Landing({ setIsLoading, isLoading }) {
             {!user ? "Sign in with Google" : "Logout"}
           </button>
         </div> */}
+        <button
+          className="flex md:hidden bg-purple-700 text-white rounded-sm p-[2px] pr-3 items-center gap-3 text-sm"
+          onClick={() => (!user ? login() : logout())}
+        >
+          <img src="/googleLogo.png" className="w-8 h-8 rounded-sm" />
+          {!user ? "Sign in with Google" : "Logout"}
+        </button>
       </div>
     </div>
   );

@@ -2,17 +2,19 @@ import {
   ArrowDownTrayIcon,
   ArrowUpTrayIcon,
 } from "@heroicons/react/24/outline";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { bookAtom, bookBool, bookModal } from "../atoms/bookAtom";
+import { bookAtom, bookBool, bookModal, searchTerm } from "../atoms/bookAtom";
 
 interface bookData {
   name: string;
-  id: string;
+  id?: string;
   author: string;
   published_on: string;
-  genre: string[];
+  genre?: string[];
   link: string;
   working: number;
   notWorking: number;
@@ -20,13 +22,42 @@ interface bookData {
 }
 
 function Search() {
-  const books = useRecoilValue(bookAtom);
+  const [books, setBooks] = useRecoilState(bookAtom);
   const [isOpen, setIsOpen] = useRecoilState(bookBool);
   const [data, setData] = useRecoilState(bookModal);
+  const term = useRecoilValue(searchTerm);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleOpen = (data: bookData) => {
     setIsOpen(true);
     setData(data);
+  };
+
+  const handleLoadMore = async () => {
+    setLoading(true);
+    const resu = await axios.get(
+      `https://www.googleapis.com/books/v1/volumes?q=${term}&maxResults=10&startIndex=${books?.length}`
+    );
+    console.log(resu.data.items);
+    let array: bookData[] = [];
+    if (books) {
+      array = [...books];
+    }
+    resu.data.items.map((item) => {
+      const ans = {
+        name: item.volumeInfo.title,
+        author: item.volumeInfo.authors,
+        published_on: item.volumeInfo.publishedDate,
+        genres: item.volumeInfo.categories,
+        link: "#",
+        working: 0,
+        notWorking: 0,
+        image: item.volumeInfo.imageLinks?.smallThumbnail,
+      };
+      array.push(ans);
+    });
+    setBooks(array);
+    setLoading(false);
   };
 
   const secure = (str: string) => {
@@ -40,12 +71,12 @@ function Search() {
   };
 
   return (
-    <div className="flex justify-center bg-gray-600 py-4">
+    <div className="flex flex-col items-center bg-gray-300 py-4">
       <div className="grid lg:grid-cols-2 grid-cols-1 md:w-[80vw] lg:w-[70vw] w-[90vw] gap-2 grid-rows-4">
         {books &&
           books.map((item: bookData, index: any) => (
             <div
-              className="h-20 flex items-center space-x-2 bg-white rounded-[5px] p-[4px]"
+              className="h-20 flex items-center space-x-2 bg-white rounded-[5px] p-[4px] shadow-2xl"
               key={index}
               onClick={() => handleOpen(item)}
             >
@@ -66,6 +97,13 @@ function Search() {
             </div>
           ))}
       </div>
+      <button
+        className="underline mt-10 p-2 outline-none text-gray-700"
+        onClick={handleLoadMore}
+        disabled={loading}
+      >
+        {!loading ? "Load More" : "Loading..."}
+      </button>
     </div>
   );
 }

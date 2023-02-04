@@ -47,7 +47,7 @@ function Header() {
         onClick={() => setMenu(true)}
       /> */}
       <button
-        className="bg-purple-700 text-white rounded-sm p-[2px] pr-3 flex items-center gap-3 text-sm"
+        className="hidden md:flex bg-purple-700 text-white rounded-sm p-[2px] pr-3 items-center gap-3 text-sm"
         onClick={() => (!user ? login() : logout())}
       >
         <img src="/googleLogo.png" className="w-8 h-8 rounded-sm" />

@@ -26,7 +26,8 @@ function BookModal() {
     setIsLoading(true);
     const api_key: string = process.env.NEXT_PUBLIC_API_KEY || "";
     const context_key: string = process.env.NEXT_PUBLIC_CONTEXT_KEY || "";
-    const links = await BookLink.linkArray(book?.name, api_key, context_key);
+    const searchTerm = book?.name + book?.author;
+    const links = await BookLink.linkArray(searchTerm, api_key, context_key);
     setBookLinks(links);
     setIsLoading(false);
   };
